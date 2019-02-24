@@ -17,21 +17,37 @@ if ($_POST['password']=="") {
     die("No Password");
 }
 
+function checkKrbPassword($username, $password) {
+    $ticket = new KRB5CCache();
+    try {
+        $ticket->initPassword(strtolower($username) . "@" . $krb_realm, $password);
+    } catch (Exception $e) {
+        return false;
+    }
+    return true;
+}
+
 $conn = getHMSDbConnection();
-$cmd = "SELECT * FROM users WHERE username = '" . strtolower($_POST['username']) . "'";
+$cmd = 'SELECT m.member_id, m.firstname, m.surname, m.username'
+  . 'FROM members m'
+  . 'INNER JOIN member_group mg ON mg.member_id = m.member_id'
+  . 'INNER JOIN grp g ON g.grp_id = mg.grp_id'
+  . 'INNER JOIN group_permissions gp ON gp.grp_id = g.grp_id'
+  . 'INNER JOIN permissions p ON p.permission_code = gp.permission_code'
+  . 'WHERE m.username = \'' . $_POST['username'] . '\''
+  . 'OR m.email = \'' . $_POST['username'] . '\''
+  . 'AND p.permission_code = \'PAT_TEST\';';
+
 $result = $conn -> query($cmd);
 
 if ($result -> num_rows > 0){
     $row = $result->fetch_assoc();
-    if ((password_verify($_POST['password'],$row['password'])) && ($row['active'] == 1)){
+    if (checkKrbPassword($row['m.username'], $_POST['password'])){
 
-        $_SESSION['user_id'] = $row['user_id'];
-        $_SESSION['first_name'] = $row['first_name'];
-        $_SESSION['last_name'] = $row['last_name'];
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['is_admin'] = $row['is_admin'];
-        $_SESSION['datetime_added'] = $row['datetime_added'];
-        $_SESSION['added_by'] = $row['added_by'];
+        $_SESSION['user_id'] = $row['m.member_id'];
+        $_SESSION['first_name'] = $row['m.firstname'];
+        $_SESSION['last_name'] = $row['m.surname'];
+        $_SESSION['username'] = $row['m.username'];
         echo "Success";
     }
     else {
