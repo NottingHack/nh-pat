@@ -61,8 +61,12 @@ function getLastAssetTest ($id) {
     $testinfo = [];
 
     $conn = getDbConnection();
-    $cmd = "SELECT * FROM tests WHERE asset_id = '" . $id . "' ORDER BY test_id DESC LIMIT 1;";
-    $result = $conn -> query($cmd);
+     $stmt = $conn->prepare('SELECT * FROM tests WHERE asset_id = ? ORDER BY test_id DESC LIMIT 1;');
+
+    $stms->bind_parm('i', $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     if ($result -> num_rows > 0){
         while ($row = $result->fetch_assoc()) {
@@ -77,6 +81,8 @@ function getLastAssetTest ($id) {
         }
 
     }
+    $stmt->close();
+
     return $testinfo;
 }
 

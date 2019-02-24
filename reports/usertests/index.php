@@ -36,8 +36,12 @@ include_once '../../resources/header.php';
                 <?php
 
                 $conn = getDbConnection();
-                $cmd = "SELECT * FROM tests WHERE user_id = '" . $id . "'";
-                $result = $conn -> query($cmd);
+                $stmt = $conn->prepare('SELECT * FROM tests WHERE user_id = ?;');
+
+                $stms->bind_parm('i', $id);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
 
                 if ($result -> num_rows > 0){
                     while ($row = $result->fetch_assoc()) {
@@ -59,6 +63,7 @@ include_once '../../resources/header.php';
                     }
 
                 }
+                $stmt->close();
 
                 ?>
 

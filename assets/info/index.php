@@ -30,8 +30,12 @@ include_once '../../resources/header.php';
                 <?php
 
                 $conn = getDbConnection();
-                $cmd = "SELECT * FROM assets WHERE asset_id = '" . $_GET['id'] . "';";
-                $result = $conn -> query($cmd);
+                $stmt = $conn->prepare('SELECT * FROM assets WHERE asset_id = ?;');
+
+                $stms->bind_parm('i', $_GET['id']);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
 
                 if ($result -> num_rows > 0){
                     while ($row = $result->fetch_assoc()) {
@@ -45,6 +49,7 @@ include_once '../../resources/header.php';
 
                 }
 
+                $stmt->close();
                 ?>
 
             </table>
@@ -62,8 +67,12 @@ include_once '../../resources/header.php';
                 <?php
 
                 $conn = getDbConnection();
-                $cmd2 = "SELECT * FROM tests WHERE asset_id = '" . $_GET['id'] . "'";
-                $result2 = $conn -> query($cmd2);
+                $stmt = $conn->prepare('SELECT * FROM tests WHERE asset_id = ?;');
+
+                $stms->bind_parm('i', $_GET['id']);
+                $stmt->execute();
+
+                $result = $stmt->get_result();
 
                 if ($result2 -> num_rows > 0){
                     while ($row2 = $result2->fetch_assoc()) {
@@ -84,6 +93,7 @@ include_once '../../resources/header.php';
                     }
 
                 }
+                $stmt->close();
 
                 ?>
 
