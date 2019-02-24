@@ -21,10 +21,14 @@
 require_once '/home/hms/www_secure/nhpat.php';
 
 function getDbConnection() {
+    global $db_server, $db_user, $db_pass, $db_name;
+
     return new mysqli($db_server, $db_user, $db_pass, $db_name);
 }
 
 function getHMSDbConnection() {
+    global $db_server, $db_user, $db_pass, $db_name_hms;
+
     return new mysqli($db_server, $db_user, $db_pass, $db_name_hms);
 }
 
