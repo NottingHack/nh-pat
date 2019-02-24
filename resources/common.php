@@ -38,7 +38,7 @@ function getUserInformation($id) {
     $conn = getHMSDbConnection();
     $stmt = $conn->prepare('SELECT member_id, firstname, surname, username FROM members WHERE member_id = ?;');
 
-    $stmt->bind_param("i", $id);
+    $stmt->bind_param('i', $id);
     $stmt->execute();
 
     $result = $stmt->get_result();

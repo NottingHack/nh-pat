@@ -9,39 +9,20 @@
 session_start();
 require_once '../../resources/common.php';
 
-$insert = "INSERT INTO assets VALUES ('";
-
-if ($_POST['asset_id']=="") {
+if ($_POST['asset_id'] == '') {
     die('No Asset ID');
-}
-else {
-    $insert = $insert . $_POST['asset_id'] . "', '";
-}
-if ($_POST['description']=="") {
+} else if ($_POST['description'] == '') {
     die('No Description');
-}
-else {
-    $insert = $insert . $_POST['description'] . "', '";
-}
-if ($_POST['location']=="") {
+} else if ($_POST['location'] == '') {
     die('No Location');
-}
-else {
-    $insert = $insert . $_POST['location'] . "', '";
-}
-if ($_POST['class']=="") {
+} else if ($_POST['class'] == '') {
     die('No Class');
+} else {
+    $conn = getDbConnection();
+    $stmt = $conn->prepare('INSERT INTO assets VALUES (?, ?, ?, ?, 1)');
+    $stmt->bind_param('ssss', $_POST['asset_id'], $_POST['description'], $_POST['location'], $_POST['class']);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Success";
 }
-else {
-    $insert = $insert . $_POST['class'] . "', '";
-}
-$insert = $insert . "1";
-// ADDED BY HERE
-
-$insert = $insert . "'); ";
-
-$conn = getDbConnection();
-$cmd = $insert;
-$conn -> query($cmd);
-
-echo "Success";

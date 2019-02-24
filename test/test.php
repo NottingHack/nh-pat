@@ -8,59 +8,57 @@
 
 session_start();
 
-require_once '../../resources/common.php';
+require_once '../resources/common.php';
 
 $insert = "INSERT INTO tests (asset_id, user_id, datetime, inspection, insulation, earth, pass, note) VALUES ('";
 
 if ($_POST['asset_id']=="") {
     die("No Asset ID");
 }
-else {
-    $insert = $insert . $_POST['asset_id'] . "', '";
-}
 
-$insert = $insert . $_SESSION['user_id'] . "', '";
-
-$insert = $insert . date('Y-m-d H:i:s') . "', '";
+$date = (new \DateTime())->format('Y-m-d H:i:s');
 
 if ($_POST['passed_inspection']=="") {
-    $insert = $insert . "0', '";
-}
-else {
-    $insert = $insert . "1', '";
+    $passed_inspection = 0;
+} else {
+    $passed_inspection = 1;
 }
 
 if ($_POST['insulation_resistance']=="") {
     die("No Insulation Resistance");
 }
-else {
-    $insert = $insert . $_POST['insulation_resistance'] . "', '";
-}
 
 if ($_POST['earth_bond']=="") {
     die("No Earth Bond");
 }
-else {
-    $insert = $insert . $_POST['earth_bond'] . "', '";
-}
 
 if ($_POST['pass']=="") {
-    $insert = $insert . "0', '";
-}
-else {
-    $insert = $insert . "1', '";
+    $pass = 0;
+} else {
+    $pass = 1;
 }
 
 if ($_POST['note']=="") {
-    $insert = $insert . "";
+    $note = '';
+} else {
+    $note = $_POST['note'];
 }
-else {
-    $insert = $insert . $_POST['note'];
-}
-
-$insert = $insert . "'); ";
 
 $conn = getDbConnection();
-$cmd = $insert;
-$conn -> query($cmd);
+$stmt = $conn->prepare('INSERT INTO tests (asset_id, user_id, datetime, inspection, insulation, earth, pass, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+$stmt->bind_param(
+    'sisissis',
+    $_POST['asset_id'],
+    $_SESSION['user_id'],
+    $date,
+    $passed_inspection,
+    $_POST['insulation_resistance'],
+    $_POST['earth_bond'],
+    $pass,
+    $note
+);
+
+$stmt->execute();
+$stmt->close();
+
 echo "Success";

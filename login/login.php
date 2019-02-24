@@ -42,7 +42,7 @@ $stmt = $conn->prepare('SELECT m.member_id, m.firstname, m.surname, m.username '
   . 'OR m.email = ? '
   . 'AND p.permission_code = \'PAT_TEST\';');
 
-$stmt->bind_param("ss", $_POST['username'], $_POST['username']);
+$stmt->bind_param('ss', $_POST['username'], $_POST['username']);
 $stmt->execute();
 
 $result = $stmt->get_result();
