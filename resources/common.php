@@ -18,7 +18,7 @@
  * $db_server = '<HOST>';
  * $krb_realm = 'NOTTINGHACK.ORG.UK';
  */
-require_once '../../www_secure/nhpat.php';
+require_once '/home/hms/www_secure/nhpat.php';
 
 function getDbConnection() {
     return new mysqli($db_server, $db_user, $db_pass, $db_name);
