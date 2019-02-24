@@ -35,7 +35,7 @@ include_once '../../resources/header.php';
 
                 <?php
 
-                $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+                $conn = getDbConnection();
                 $cmd = "SELECT * FROM tests WHERE user_id = '" . $id . "'";
                 $result = $conn -> query($cmd);
 

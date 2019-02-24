@@ -8,11 +8,9 @@
 
 session_start();
 
+require_once '../../resources/common.php';
+
 $insert = "INSERT INTO tests (asset_id, user_id, datetime, inspection, insulation, earth, pass, note) VALUES ('";
-$db_name = 'nhpat';
-$db_user = 'nhpatdb';
-$db_pass = 'nottinghack';
-$db_server = 'localhost';
 
 if ($_POST['asset_id']=="") {
     die("No Asset ID");
@@ -62,7 +60,7 @@ else {
 
 $insert = $insert . "'); ";
 
-$conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+$conn = getDbConnection();
 $cmd = $insert;
 $conn -> query($cmd);
 echo "Success";

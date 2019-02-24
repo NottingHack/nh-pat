@@ -29,7 +29,7 @@ include_once '../../resources/header.php';
 
                 <?php
 
-                $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+                $conn = getDbConnection();
                 $cmd = "SELECT * FROM assets WHERE current = 1;";
                 $cmd2 = "SELECT asset_id FROM tests WHERE datetime > (SELECT DATE_SUB(CURDATE(), INTERVAL 6 MONTH)) AND pass = 1;";
                 $result = $conn -> query($cmd);

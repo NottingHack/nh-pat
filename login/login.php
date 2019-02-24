@@ -17,7 +17,7 @@ if ($_POST['password']=="") {
     die("No Password");
 }
 
-$conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+$conn = getHMSDbConnection();
 $cmd = "SELECT * FROM users WHERE username = '" . strtolower($_POST['username']) . "'";
 $result = $conn -> query($cmd);
 

@@ -29,7 +29,7 @@ include_once '../../resources/header.php';
 
                 <?php
 
-                $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+                $conn = getDbConnection();
                 $cmd = "SELECT * FROM assets WHERE asset_id = '" . $_GET['id'] . "';";
                 $result = $conn -> query($cmd);
 
@@ -61,7 +61,7 @@ include_once '../../resources/header.php';
 
                 <?php
 
-                $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+                $conn = getDbConnection();
                 $cmd2 = "SELECT * FROM tests WHERE asset_id = '" . $_GET['id'] . "'";
                 $result2 = $conn -> query($cmd2);
 

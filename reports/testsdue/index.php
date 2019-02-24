@@ -28,7 +28,7 @@ include_once '../../resources/header.php';
 
                 <?php
 
-                $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+                $conn = getDbConnection();
                 $cmd = "SELECT asset_id, datetime, user_id, note FROM tests WHERE (asset_id NOT IN (SELECT asset_id FROM tests WHERE datetime > (SELECT DATE_SUB(CURDATE(), INTERVAL 6 MONTH)) AND pass = 1))";
                 $result = $conn -> query($cmd);
 

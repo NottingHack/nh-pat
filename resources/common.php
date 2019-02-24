@@ -6,19 +6,26 @@
  * Time: 00:56
  */
 
-$db_name = 'nhpat';
-$db_user = 'nhpatdb';
-$db_pass = 'nottinghack';
-$db_server = 'localhost';
+/**
+ * nhpat.php contains
+ *
+ * <?php
+ *
+ * $db_name = 'nh-pat';
+ * $db_user = '<USER>';
+ * $db_pass = '<PASSWORD>';
+ * $db_server = '<HOST>';
+ */
+require_once '../../www_secure/nhpat.php';
+
+function getDbConnection() {
+    return new mysqli($db_server, $db_user, $db_pass, $db_name);
+}
 
 function getUserInformation($id) {
-    $db_name = 'nhpat';
-    $db_user = 'nhpatdb';
-    $db_pass = 'nottinghack';
-    $db_server = 'localhost';
     $userinfo = [];
 
-    $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+    $conn = getDbConnection();
     $cmd = "SELECT * FROM users WHERE user_id = '" . $id . "'";
     $result = $conn -> query($cmd);
 
@@ -47,13 +54,9 @@ function isUserAdmin() {
 }
 
 function getLastAssetTest ($id) {
-    $db_name = 'nhpat';
-    $db_user = 'nhpatdb';
-    $db_pass = 'nottinghack';
-    $db_server = 'localhost';
     $testinfo = [];
 
-    $conn = new mysqli($db_server, $db_user, $db_pass, $db_name);
+    $conn = getDbConnection();
     $cmd = "SELECT * FROM tests WHERE asset_id = '" . $id . "' ORDER BY test_id DESC LIMIT 1;";
     $result = $conn -> query($cmd);
 
