@@ -32,17 +32,20 @@ function checkKrbPassword($username, $password) {
 }
 
 $conn = getHMSDbConnection();
-$cmd = 'SELECT m.member_id, m.firstname, m.surname, m.username '
+$stmt = $conn->prepare('SELECT m.member_id, m.firstname, m.surname, m.username '
   . 'FROM members m '
   . 'INNER JOIN member_group mg ON mg.member_id = m.member_id '
   . 'INNER JOIN grp g ON g.grp_id = mg.grp_id '
   . 'INNER JOIN group_permissions gp ON gp.grp_id = g.grp_id '
   . 'INNER JOIN permissions p ON p.permission_code = gp.permission_code '
-  . 'WHERE m.username = \'' . $_POST['username'] . '\' '
-  . 'OR m.email = \'' . $_POST['username'] . '\' '
-  . 'AND p.permission_code = \'PAT_TEST\';';
+  . 'WHERE m.username = ? '
+  . 'OR m.email = ? '
+  . 'AND p.permission_code = \'PAT_TEST\';');
 
-$result = $conn -> query($cmd);
+$stmt->bind_param("ss", $_POST['username'], $_POST['username']);
+$stmt->execute();
+
+$result = $stmt->get_result();
 
 if ($result -> num_rows > 0){
     $row = $result->fetch_assoc();
@@ -61,3 +64,5 @@ if ($result -> num_rows > 0){
 else {
     echo "User Not Found";
 }
+
+$stmt->close();

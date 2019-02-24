@@ -36,8 +36,12 @@ function getUserInformation($id) {
     $userinfo = [];
 
     $conn = getHMSDbConnection();
-    $cmd = 'SELECT member_id, firstname, surname, username FROM members WHERE member_id = \'' . $id . '\';';
-    $result = $conn -> query($cmd);
+    $stmt = $conn->prepare('SELECT member_id, firstname, surname, username FROM members WHERE member_id = ?;');
+
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
 
     if ($result -> num_rows > 0){
         $row = $result->fetch_assoc();
@@ -48,6 +52,8 @@ function getUserInformation($id) {
         $userinfo['username'] = $row['username'];
 
     }
+    $stmt->close();
+
     return $userinfo;
 }
 
