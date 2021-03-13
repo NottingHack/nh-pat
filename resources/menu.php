@@ -37,7 +37,7 @@ $menu_reports = '<li class="dropdown ' . $menu_reports_active . '">
         <span class="caret"></span></a>
         <ul class="dropdown-menu">';
 
-if (array_key_exists('user_id', $__SESSION)) {
+if (array_key_exists('user_id', $_SESSION)) {
     $menu_reports .= '<li><a href="/reports/usertests/?id=' . $_SESSION['user_id'] . '">My Tests</a></li>';
 }
 
