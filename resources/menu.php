@@ -35,8 +35,13 @@ $menu_logout = '<li><a href="/logout"><span class="glyphicon glyphicon-log-in"><
 $menu_reports = '<li class="dropdown ' . $menu_reports_active . '">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Test Reports
         <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-          <li><a href="/reports/usertests/?id=' . $_SESSION['user_id'] . '">My Tests</a></li>
+        <ul class="dropdown-menu">';
+
+if (array_key_exists('user_id', $__SESSION)) {
+    $menu_reports .= '<li><a href="/reports/usertests/?id=' . $_SESSION['user_id'] . '">My Tests</a></li>';
+}
+
+$menu_reports .= '
           <li><a href="/reports/testsdue">Tests Due</a></li>
           <li><a href="/reports/recenttests">Recent Tests</a></li>
         </ul>
